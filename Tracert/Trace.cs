@@ -2,20 +2,25 @@ namespace Tracert;
 
 public class Trace
 {
-    public readonly string ReplyAddress;
-    public readonly long ElapsedTime;
-    public readonly int Ttl;
+    private readonly string _replyAddress;
+    private readonly long _elapsedTime;
+    private readonly int _ttl;
 
     public Trace(string address, long time, int ttl)
     {
-        ReplyAddress = address;
-        ElapsedTime = time;
-        Ttl = ttl;
+        _replyAddress = address;
+        _elapsedTime = time;
+        _ttl = ttl;
     }
 
     public Trace(int ttl)
     {
-        Ttl = ttl;
-        ReplyAddress = "* * * * * * *";
+        _ttl = ttl;
+        _replyAddress = "* * * * * * *";
+    }
+
+    public void PrintResult()
+    {
+        Console.WriteLine(_ttl + ") " + _replyAddress + "\t" + _elapsedTime + "ms");
     }
 }

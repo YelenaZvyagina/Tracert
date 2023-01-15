@@ -33,7 +33,7 @@ namespace Tracert
 
             foreach (var trace in traceRoute)
             {
-                Console.WriteLine(trace.Ttl + ") " + trace.ReplyAddress + "\t" + trace.ElapsedTime + "ms");
+                trace.PrintResult();
             }
 
             Console.WriteLine("Trace finished");
