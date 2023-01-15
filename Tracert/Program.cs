@@ -7,7 +7,7 @@ namespace Tracert
     internal static class Program
     {
         private const int Timeout = 10000;
-        private const int MaxHops = 30;
+        private const int MaxTtl = 30;
 
         private static void Main()
         {
@@ -28,7 +28,7 @@ namespace Tracert
             }
 
             Console.WriteLine($"Tracing to {ipOrDomain} ({ip})");
-            Console.WriteLine($"Over a maximum of {MaxHops} hops");
+            Console.WriteLine($"Over a maximum of {MaxTtl} hops");
             var traceRoute = TraceRoute(ip.ToString());
 
             foreach (var trace in traceRoute)
@@ -44,27 +44,27 @@ namespace Tracert
             using var pingSender = new Ping();
             var stopWatch = new Stopwatch();
 
-            for (var hop = 1; hop <= MaxHops; hop++)
+            for (var ttl = 1; ttl <= MaxTtl; ttl++)
             {
                 stopWatch.Reset();
                 stopWatch.Start();
-                var reply = pingSender.Send(ip, Timeout, new byte[32], new PingOptions(hop, true));
+                var reply = pingSender.Send(ip, Timeout, new byte[32], new PingOptions(ttl, true));
                 stopWatch.Stop();
 
                 if (reply.Status == IPStatus.Success)
                 {
-                    yield return new Trace(reply.Address.ToString(), stopWatch.ElapsedMilliseconds, hop);
+                    yield return new Trace(reply.Address.ToString(), stopWatch.ElapsedMilliseconds, ttl);
                     break;
                 }
 
                 if (reply.Status == IPStatus.TtlExpired)
                 {
-                    yield return new Trace(reply.Address.ToString(), stopWatch.ElapsedMilliseconds, hop);
+                    yield return new Trace(reply.Address.ToString(), stopWatch.ElapsedMilliseconds, ttl);
                 }
 
                 if (reply.Status == IPStatus.TimedOut)
                 {
-                    yield return new Trace(hop);
+                    yield return new Trace(ttl);
                 }
             }
         }

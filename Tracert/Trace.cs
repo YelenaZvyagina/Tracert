@@ -4,18 +4,18 @@ public class Trace
 {
     public readonly string ReplyAddress;
     public readonly long ElapsedTime;
-    public readonly int Hop;
+    public readonly int Ttl;
 
-    public Trace(string address, long time, int hop)
+    public Trace(string address, long time, int ttl)
     {
         ReplyAddress = address;
         ElapsedTime = time;
-        Hop = hop;
+        Ttl = ttl;
     }
 
-    public Trace(int hop)
+    public Trace(int ttl)
     {
-        Hop = hop;
+        Ttl = ttl;
         ReplyAddress = "* * * * * * *";
     }
 }
